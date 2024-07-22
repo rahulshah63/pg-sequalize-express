@@ -1,0 +1,95 @@
+openapi: 3.0.0
+info:
+  title: AGS API
+  version: 1.0.0
+  description: API documentation for AGS Node.js app
+
+tags:
+  - name: Users
+    description: API endpoints related to users
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        _id:
+          type: string
+        email:
+          type: string
+        loginProvider:
+          type: string
+        walletAddress:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+paths:
+# POST [User]
+  /v1/user:
+    post:
+      summary: Create a new user
+      description: Creates a new user with the provided details.
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                walletAddress:
+                  type: string
+                loginProvider:
+                  type: string
+                email:
+                  type: string
+# GET [User Count]
+  /v1/user/count:
+    get:
+      summary: Get recorded user counts
+      description: Retrieves user count based on provider
+      tags:
+        - Users
+      parameters:
+        - in: header
+          name: api-key
+          required: true
+          schema:
+            type: string
+# GET [User Profile]
+  /v1/user/{walletAddress}:
+    get:
+      summary: Get user by wallet address
+      description: Retrieves user information based on the provided wallet address.
+      tags:
+        - Users
+      parameters:
+        - in: path
+          name: walletAddress
+          description: User's wallet address
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      avatar:
+                        type: string
+                        format: url
+                      name:
+                        type: string
+                      xp:
+                        type: integer
+                  message:
+                    type: string
